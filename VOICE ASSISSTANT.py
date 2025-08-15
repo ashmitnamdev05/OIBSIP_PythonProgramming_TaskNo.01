@@ -11,14 +11,8 @@ import os
 import json
 import random
 
-# ---------------------------
-# Config
-# ---------------------------
 CHAT_HISTORY_FILE = "chat_history.json"
 
-# ---------------------------
-# Voice engine
-# ---------------------------
 engine = pyttsx3.init()
 engine.setProperty('rate', 170)
 
@@ -29,9 +23,6 @@ def speak(text):
     engine.runAndWait()
     save_chat("Assistant", text)
 
-# ---------------------------
-# Speech recognition
-# ---------------------------
 recognizer = sr.Recognizer()
 
 def listen():
@@ -49,9 +40,6 @@ def listen():
     except sr.RequestError:
         speak("Speech recognition service unavailable.")
 
-# ---------------------------
-# Save & Load Chat
-# ---------------------------
 def save_chat(sender, message):
     history = []
     if os.path.exists(CHAT_HISTORY_FILE):
@@ -69,9 +57,6 @@ def load_chat():
             tag = "user" if entry["sender"] == "You" else "assistant"
             chat_log.insert(tk.END, f"{entry['sender']}: {entry['message']}\n", tag)
 
-# ---------------------------
-# Command processing
-# ---------------------------
 def process_command(query):
     if any(greet in query for greet in ["hello", "hi", "hey"]):
         speak("Hello! How can I assist you?")
@@ -116,9 +101,6 @@ def process_command(query):
     else:
         speak("I am not sure how to respond to that yet.")
 
-# ---------------------------
-# Weather API
-# ---------------------------
 def get_weather(city):
     api_key = "YOUR_OPENWEATHERMAP_API_KEY"
     if not api_key or api_key == "YOUR_OPENWEATHERMAP_API_KEY":
@@ -136,9 +118,6 @@ def get_weather(city):
     except Exception as e:
         speak("Could not fetch weather right now.")
 
-# ---------------------------
-# GUI functions
-# ---------------------------
 def start_listening():
     threading.Thread(target=listen).start()
 
@@ -151,9 +130,6 @@ def send_text():
         process_command(query.lower())
         entry.delete(0, tk.END)
 
-# ---------------------------
-# Tkinter GUI setup
-# ---------------------------
 root = tk.Tk()
 root.title("Intermediate Voice Assistant")
 root.geometry("500x550")
